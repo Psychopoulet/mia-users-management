@@ -125,7 +125,7 @@ Update `lib/data/Descriptor.json`:
 
 ## Step status
 
-- [ ] a) OpenAPI
+- [x] a) OpenAPI
 - [ ] b) Back-office
 - [x] c) Unit tests
 - [ ] d) Front SDK

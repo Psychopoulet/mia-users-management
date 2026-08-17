@@ -578,6 +578,12 @@
 			},
 			"PushEventPluginError": {
 				"$ref": "./DescriptorEvents.json#/components/schemas/PushEventPluginError"
+			},
+			"PushEventUserAdded": {
+				"$ref": "./DescriptorEvents.json#/components/schemas/PushEventUserAdded"
+			},
+			"PushEventUserRemoved": {
+				"$ref": "./DescriptorEvents.json#/components/schemas/PushEventUserRemoved"
 			}
 		}
 	},
