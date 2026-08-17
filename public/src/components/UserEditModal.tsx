@@ -77,9 +77,6 @@ export default class UserEditModal extends React.Component<iProps, iState> {
 
     private readonly _handleToggleIsAdmin = (e: React.ChangeEvent<HTMLInputElement>, value: boolean): void => {
 
-        e.preventDefault();
-        e.stopPropagation();
-
         this.setState({
             "isAdmin": value
         });
