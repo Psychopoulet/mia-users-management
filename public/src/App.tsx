@@ -6,6 +6,8 @@
 
     // locals
     import getSDK from "./SDK";
+    import CurrentUserProvider from "./components/CurrentUserContext";
+    import UsersManagement from "./components/UsersManagement";
 
 // types & interfaces
 
@@ -120,6 +122,17 @@ export default class App extends React.Component<iPropsNode, iState> {
 
     // interface handlers
 
+    private readonly _handleError = (err: Error): void => {
+
+        this.setState({
+            "error": {
+                "code": "UNKNOWN_ERROR",
+                "message": err.message
+            }
+        });
+
+    };
+
     private readonly _handleCloseError = (e: React.MouseEvent<HTMLButtonElement>): void => {
 
         e.preventDefault();
@@ -173,7 +186,13 @@ export default class App extends React.Component<iPropsNode, iState> {
                     </ModalBody>
                 </Modal> }
 
-                <span>Hello World !</span>
+                <div className="row">
+                    <div className="col-12 col-lg-8 col-xl-6">
+                        <CurrentUserProvider onError={ this._handleError }>
+                            <UsersManagement onError={ this._handleError } />
+                        </CurrentUserProvider>
+                    </div>
+                </div>
 
             </div>;
 
