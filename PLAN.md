@@ -36,12 +36,13 @@ Update `lib/data/Descriptor.json`:
 - `npm run transpile-openapi-back`.
 - Resolve `auth-db` from Container in `_initWorkSpace`.
 - Implement Mediator operations against `AuthDatabase` (`getUsers`, `getUserByName`, `addUser`, `editUserPassword`, `editUserIsAdmin`, `removeUser`, `getTokensByUserName`, `removeToken`).
-- Enforce: immutable name; tokens read/delete only; own-tokens unless admin.
+- Do **not** validate request parameters (host / Server) and do **not** re-implement host authentication.
+- **Do** enforce this plugin’s authorization rules: create user = admin; update/delete user = self or admin (`isAdmin` change = admin only); list/delete tokens = self/owner or admin.
 - `npm run lint-back` then `npm run build-back`.
 
 ### c) Unit tests — ~3h
 
-- Mocha under `test/` (numeric prefixes) covering Mediator: CRUD users, token list/delete, permission matrix (self vs admin vs other).
+- Mocha under `test/` (numeric prefixes) covering Mediator: CRUD users, token list/delete, and authorization matrix (self vs admin vs other). No OpenAPI param-validation / host-auth tests.
 - Mediator coverage ≥ 95% via `npm run unit-tests-local`.
 - `npm run build-back` then `npm run unit-tests` (**blocking** before front).
 
@@ -70,7 +71,7 @@ Update `lib/data/Descriptor.json`:
 ## Step status
 
 - [x] a) OpenAPI
-- [ ] b) Back-office
+- [x] b) Back-office
 - [ ] c) Unit tests
 - [ ] d) Front SDK
 - [ ] e) Front components
