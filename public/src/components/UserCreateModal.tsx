@@ -142,7 +142,7 @@ export default class UserCreateModal extends React.Component<iProps, iState> {
         return <Modal appId="{{plugin.name}}-app" title="Create user" centered
             onClose={ this.props.onClose }>
 
-            <ModalBody>
+            <ModalBody className="pb-0">
 
                 <InputTextLabel id="create-user-name" label="Username"
                     disabled={ this.state.running }
@@ -156,7 +156,7 @@ export default class UserCreateModal extends React.Component<iProps, iState> {
                 />
 
                 <CheckBoxLabel id="create-user-is-admin" label="Administrator"
-                    className="mb-0" disabled={ this.state.running }
+                    disabled={ this.state.running }
                     checked={ this.state.isAdmin } onToogle={ this._handleToggleIsAdmin }
                 />
 

@@ -159,7 +159,7 @@ export default class UserEditModal extends React.Component<iProps, iState> {
         return <Modal appId="{{plugin.name}}-app" title={ "Edit " + this.props.user.name } centered
             onClose={ this.props.onClose }>
 
-            <ModalBody>
+            <ModalBody className="pb-0">
 
                 <InputTextLabel id="edit-user-name" label="Username" disabled value={ this.props.user.name } />
 
@@ -170,7 +170,7 @@ export default class UserEditModal extends React.Component<iProps, iState> {
                 />
 
                 { showIsAdmin && <CheckBoxLabel id="edit-user-is-admin" label="Administrator"
-                    className="mb-0" disabled={ this.state.running }
+                    disabled={ this.state.running }
                     checked={ this.state.isAdmin } onToogle={ this._handleToggleIsAdmin }
                 /> }
 
