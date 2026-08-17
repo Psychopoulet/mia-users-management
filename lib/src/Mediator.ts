@@ -240,7 +240,23 @@ export default class MediatorUsersManagement extends Mediator<iEventsMinimal & {
                     throw new NotFoundError("User '" + name + "' not found");
                 }
 
-                return authDb.removeUser(name);
+                if (!existing.isAdmin) {
+                    return authDb.removeUser(name);
+                }
+
+                return authDb.getUsers().then((users: AuthUserPublic[]): Promise<void> => {
+
+                    const adminCount: number = users.filter((user: AuthUserPublic): boolean => {
+                        return user.isAdmin;
+                    }).length;
+
+                    if (1 >= adminCount) {
+                        throw new ConflictError("Cannot delete the last admin");
+                    }
+
+                    return authDb.removeUser(name);
+
+                });
 
             });
 

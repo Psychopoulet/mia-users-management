@@ -252,6 +252,27 @@ describe("Mediator users", () => {
 
         });
 
+        it("should forbid deleting the last admin", async () => {
+
+            await rejects(() => {
+                return mediator.deleteUser({
+                    ...authHeaders("tok-admin"),
+                    "path": {
+                        "name": "admin"
+                    }
+                });
+            }, ConflictError);
+
+            const user = await mediator.getUser({
+                "path": {
+                    "name": "admin"
+                }
+            });
+
+            strictEqual(user.name, "admin");
+
+        });
+
     });
 
 });
