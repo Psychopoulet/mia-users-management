@@ -72,17 +72,33 @@ export default class UsersManagement extends React.Component<iProps, iState> {
 
     public componentDidMount (): void {
 
+        getSDK()
+            .on("user.added", this._onUserAdded)
+            .on("user.removed", this._onUserRemoved);
+
         this._loadUsers();
+
+    }
+
+    public componentWillUnmount (): void {
+
+        getSDK()
+            .off("user.added", this._onUserAdded)
+            .off("user.removed", this._onUserRemoved);
 
     }
 
     // private
 
-    private _loadUsers (): void {
+    private _loadUsers (showLoading: boolean = true): void {
 
-        this.setState({
-            "loading": true
-        });
+        if (showLoading) {
+
+            this.setState({
+                "loading": true
+            });
+
+        }
 
         getSDK().getUsers().then((users: User[]): void => {
 
@@ -101,6 +117,28 @@ export default class UsersManagement extends React.Component<iProps, iState> {
         });
 
     }
+
+    // sdk events
+
+    private readonly _onUserAdded = (): void => {
+
+        this._loadUsers(false);
+
+    };
+
+    private readonly _onUserRemoved = (user: User): void => {
+
+        this.setState((prev): Pick<iState, "editUser" | "deleteUser" | "tokensUser"> => {
+            return {
+                "editUser": prev.editUser?.name === user.name ? null : prev.editUser,
+                "deleteUser": prev.deleteUser?.name === user.name ? null : prev.deleteUser,
+                "tokensUser": prev.tokensUser?.name === user.name ? null : prev.tokensUser
+            };
+        });
+
+        this._loadUsers(false);
+
+    };
 
     // interface handlers
 

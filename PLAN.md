@@ -129,6 +129,6 @@ Update `lib/data/Descriptor.json`:
 - [x] b) Back-office
 - [x] c) Unit tests
 - [x] d) Front SDK
-- [ ] e) Front components
+- [x] e) Front components
 - [x] f) README
 - [ ] g) Review
