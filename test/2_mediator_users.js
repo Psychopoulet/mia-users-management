@@ -203,6 +203,53 @@ describe("Mediator users", () => {
 
         });
 
+        it("should forbid removing the last admin", async () => {
+
+            await rejects(() => {
+                return mediator.updateUser({
+                    ...authHeaders("tok-admin"),
+                    "path": {
+                        "name": "admin"
+                    }
+                }, {
+                    "isAdmin": false
+                });
+            }, ConflictError);
+
+            const user = await mediator.getUser({
+                "path": {
+                    "name": "admin"
+                }
+            });
+
+            strictEqual(user.isAdmin, true);
+
+        });
+
+        it("should allow demoting an admin when another admin remains", async () => {
+
+            await mediator.updateUser({
+                ...authHeaders("tok-admin"),
+                "path": {
+                    "name": "alice"
+                }
+            }, {
+                "isAdmin": true
+            });
+
+            const user = await mediator.updateUser({
+                ...authHeaders("tok-admin"),
+                "path": {
+                    "name": "admin"
+                }
+            }, {
+                "isAdmin": false
+            });
+
+            strictEqual(user.isAdmin, false);
+
+        });
+
     });
 
     describe("deleteUser", () => {

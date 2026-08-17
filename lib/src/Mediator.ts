@@ -191,18 +191,40 @@ export default class MediatorUsersManagement extends Mediator<iEventsMinimal & {
                     throw new NotFoundError("User '" + name + "' not found");
                 }
 
-                const tasks: Array<Promise<void>> = [];
+                let lastAdminGuard: Promise<void> = Promise.resolve();
 
-                if ("string" === typeof bodyParameters.password) {
-                    tasks.push(authDb.editUserPassword(name, bodyParameters.password));
+                if (false === bodyParameters.isAdmin && existing.isAdmin) {
+
+                    lastAdminGuard = authDb.getUsers().then((users: AuthUserPublic[]): void => {
+
+                        const adminCount: number = users.filter((user: AuthUserPublic): boolean => {
+                            return user.isAdmin;
+                        }).length;
+
+                        if (1 >= adminCount) {
+                            throw new ConflictError("Cannot remove the last admin");
+                        }
+
+                    });
+
                 }
 
-                if ("boolean" === typeof bodyParameters.isAdmin) {
-                    tasks.push(authDb.editUserIsAdmin(name, bodyParameters.isAdmin));
-                }
+                return lastAdminGuard.then((): Promise<void> => {
 
-                return Promise.all(tasks).then((): void => {
-                    // no-op: wait for password / isAdmin updates
+                    const tasks: Array<Promise<void>> = [];
+
+                    if ("string" === typeof bodyParameters.password) {
+                        tasks.push(authDb.editUserPassword(name, bodyParameters.password));
+                    }
+
+                    if ("boolean" === typeof bodyParameters.isAdmin) {
+                        tasks.push(authDb.editUserIsAdmin(name, bodyParameters.isAdmin));
+                    }
+
+                    return Promise.all(tasks).then((): void => {
+                        // no-op: wait for password / isAdmin updates
+                    });
+
                 });
 
             });
