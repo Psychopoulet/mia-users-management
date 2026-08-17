@@ -131,4 +131,4 @@ Update `lib/data/Descriptor.json`:
 - [x] d) Front SDK
 - [x] e) Front components
 - [x] f) README
-- [ ] g) Review
+- [x] g) Review
