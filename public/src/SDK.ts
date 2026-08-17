@@ -10,7 +10,7 @@
 
     // locals
     import type { components, paths, operations } from "./Descriptor";
-    type tEvents = components["schemas"]["PushEventPluginInitialized"] | components["schemas"]["PushEventPluginReleased"] | components["schemas"]["PushEventPluginError"];
+    type tEvents = components["schemas"]["PushEventPluginInitialized"] | components["schemas"]["PushEventPluginReleased"] | components["schemas"]["PushEventPluginError"] | components["schemas"]["PushEventUserAdded"] | components["schemas"]["PushEventUserRemoved"];
 
     type HttpMethodsOf<P extends keyof paths> = {
         [M in keyof paths[P]]: paths[P][M] extends { "responses": unknown }
@@ -26,6 +26,8 @@ export class SDK extends EventEmitter<{
     "initialized": [];
     "released": [];
     "error": [ components["schemas"]["PushEventPluginError"]["data"] ];
+    "user.added": [ components["schemas"]["User"] ];
+    "user.removed": [ components["schemas"]["User"] ];
 }> {
 
     // static
@@ -157,6 +159,12 @@ export class SDK extends EventEmitter<{
                     break;
                     case "error":
                         this.emit("error", parsedMessage.data);
+                    break;
+                    case "user.added":
+                        this.emit("user.added", parsedMessage.data);
+                    break;
+                    case "user.removed":
+                        this.emit("user.removed", parsedMessage.data);
                     break;
 
                     default:
