@@ -26,6 +26,8 @@ export default class MediatorUsersManagement extends Mediator<iEventsMinimal & {
     "initialized": [ ContainerPattern ];
     "released": [ ContainerPattern ];
     "error": [ components["schemas"]["PushEventPluginError"]["data"] ];
+    "user.added": [ components["schemas"]["User"] ];
+    "user.removed": [ components["schemas"]["User"] ];
 }> {
 
     // attributes
@@ -145,7 +147,11 @@ export default class MediatorUsersManagement extends Mediator<iEventsMinimal & {
                 throw new Error("User was not created");
             }
 
-            return serializeUser(user);
+            const serialized: components["schemas"]["User"] = serializeUser(user);
+
+            this.emit("user.added", serialized);
+
+            return serialized;
 
         });
 
@@ -262,21 +268,34 @@ export default class MediatorUsersManagement extends Mediator<iEventsMinimal & {
                     throw new NotFoundError("User '" + name + "' not found");
                 }
 
+                const snapshot: components["schemas"]["User"] = serializeUser(existing);
+
+                let remove: Promise<void> = Promise.resolve();
+
                 if (!existing.isAdmin) {
-                    return authDb.removeUser(name);
+                    remove = authDb.removeUser(name);
+                }
+                else {
+
+                    remove = authDb.getUsers().then((users: AuthUserPublic[]): Promise<void> => {
+
+                        const adminCount: number = users.filter((user: AuthUserPublic): boolean => {
+                            return user.isAdmin;
+                        }).length;
+
+                        if (1 >= adminCount) {
+                            throw new ConflictError("Cannot delete the last admin");
+                        }
+
+                        return authDb.removeUser(name);
+
+                    });
+
                 }
 
-                return authDb.getUsers().then((users: AuthUserPublic[]): Promise<void> => {
+                return remove.then((): void => {
 
-                    const adminCount: number = users.filter((user: AuthUserPublic): boolean => {
-                        return user.isAdmin;
-                    }).length;
-
-                    if (1 >= adminCount) {
-                        throw new ConflictError("Cannot delete the last admin");
-                    }
-
-                    return authDb.removeUser(name);
+                    this.emit("user.removed", snapshot);
 
                 });
 

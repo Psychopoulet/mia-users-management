@@ -19,7 +19,9 @@ export default class ServerUsersManagement extends Server {
 
             .on("initialized", this._onPluginInitialized)
             .on("released", this._onPluginReleased)
-            .on("error", this._onPluginError);
+            .on("error", this._onPluginError)
+            .on("user.added", this._onUserAdded)
+            .on("user.removed", this._onUserRemoved);
 
         return Promise.resolve();
 
@@ -31,7 +33,9 @@ export default class ServerUsersManagement extends Server {
 
             .off("initialized", this._onPluginInitialized)
             .off("released", this._onPluginReleased)
-            .off("error", this._onPluginError);
+            .off("error", this._onPluginError)
+            .off("user.added", this._onUserAdded)
+            .off("user.removed", this._onUserRemoved);
 
         return Promise.resolve();
 
@@ -54,6 +58,18 @@ export default class ServerUsersManagement extends Server {
     private readonly _onPluginError = (data: components["schemas"]["PushEventPluginError"]["data"]): void => {
 
         this.push("error", data);
+
+    };
+
+    private readonly _onUserAdded = (data: components["schemas"]["PushEventUserAdded"]["data"]): void => {
+
+        this.push("user.added", data);
+
+    };
+
+    private readonly _onUserRemoved = (data: components["schemas"]["PushEventUserRemoved"]["data"]): void => {
+
+        this.push("user.removed", data);
 
     };
 
