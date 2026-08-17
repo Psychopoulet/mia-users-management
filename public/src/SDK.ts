@@ -145,7 +145,7 @@ export class SDK extends EventEmitter<{
             const parsedMessage: tEvents = JSON.parse(event.data) as tEvents;
 
             // must disable the rule because the plugin name can be sended by another plugin
-            if ("mia-template" === parsedMessage.plugin) { // eslint-disable-line @typescript-eslint/no-unnecessary-condition
+            if ("mia-users-management" === parsedMessage.plugin) { // eslint-disable-line @typescript-eslint/no-unnecessary-condition
 
                 switch (parsedMessage.command) {
 
@@ -199,7 +199,7 @@ export class SDK extends EventEmitter<{
 
     public getPluginDescriptor (): Promise<operations["getPluginDescriptor"]["responses"]["200"]["content"]["application/json"]> {
 
-        const url: keyof paths = "/mia-template/api/descriptor";
+        const url: keyof paths = "/mia-users-management/api/descriptor";
         const method: HttpMethodsOf<typeof url> = "get";
 
         return fetch(url, {
@@ -218,7 +218,7 @@ export class SDK extends EventEmitter<{
 
     public getPluginStatus (): Promise<operations["getPluginStatus"]["responses"]["200"]["content"]["application/json"]> {
 
-        const url: keyof paths = "/mia-template/api/status";
+        const url: keyof paths = "/mia-users-management/api/status";
         const method: HttpMethodsOf<typeof url> = "get";
 
         return fetch(url, {
@@ -234,6 +234,161 @@ export class SDK extends EventEmitter<{
             }
 
             return this._parseResponse(res) as Promise<operations["getPluginStatus"]["responses"]["200"]["content"]["application/json"]>;
+
+        });
+
+    }
+
+    public getUsers (): Promise<operations["getUsers"]["responses"]["200"]["content"]["application/json"]> {
+
+        const url: keyof paths = "/mia-users-management/api/users";
+        const method: HttpMethodsOf<typeof url> = "get";
+
+        return fetch(url, {
+            "method": method,
+            "headers": {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + this._token
+            }
+        }).then((res: Response): Promise<operations["getUsers"]["responses"]["200"]["content"]["application/json"]> => {
+
+            return this._parseResponse(res) as Promise<operations["getUsers"]["responses"]["200"]["content"]["application/json"]>;
+
+        });
+
+    }
+
+    public createUser (
+        data: operations["createUser"]["requestBody"]["content"]["application/json"]
+    ): Promise<operations["createUser"]["responses"]["201"]["content"]["application/json"]> {
+
+        const url: keyof paths = "/mia-users-management/api/users";
+        const method: HttpMethodsOf<typeof url> = "put";
+
+        return fetch(url, {
+            "method": method,
+            "headers": {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + this._token
+            },
+            "body": JSON.stringify(data)
+        }).then((res: Response): Promise<operations["createUser"]["responses"]["201"]["content"]["application/json"]> => {
+
+            return this._parseResponse(res) as Promise<operations["createUser"]["responses"]["201"]["content"]["application/json"]>;
+
+        });
+
+    }
+
+    public getUser (
+        name: operations["getUser"]["parameters"]["path"]["name"]
+    ): Promise<operations["getUser"]["responses"]["200"]["content"]["application/json"]> {
+
+        const url: `/mia-users-management/api/users/${string}` = `/mia-users-management/api/users/${encodeURIComponent(name)}`;
+        const method: HttpMethodsOf<"/mia-users-management/api/users/{name}"> = "get";
+
+        return fetch(url, {
+            "method": method,
+            "headers": {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + this._token
+            }
+        }).then((res: Response): Promise<operations["getUser"]["responses"]["200"]["content"]["application/json"]> => {
+
+            return this._parseResponse(res) as Promise<operations["getUser"]["responses"]["200"]["content"]["application/json"]>;
+
+        });
+
+    }
+
+    public updateUser (
+        name: operations["updateUser"]["parameters"]["path"]["name"],
+        data: operations["updateUser"]["requestBody"]["content"]["application/json"]
+    ): Promise<operations["updateUser"]["responses"]["200"]["content"]["application/json"]> {
+
+        const url: `/mia-users-management/api/users/${string}` = `/mia-users-management/api/users/${encodeURIComponent(name)}`;
+        const method: HttpMethodsOf<"/mia-users-management/api/users/{name}"> = "post";
+
+        return fetch(url, {
+            "method": method,
+            "headers": {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + this._token
+            },
+            "body": JSON.stringify(data)
+        }).then((res: Response): Promise<operations["updateUser"]["responses"]["200"]["content"]["application/json"]> => {
+
+            return this._parseResponse(res) as Promise<operations["updateUser"]["responses"]["200"]["content"]["application/json"]>;
+
+        });
+
+    }
+
+    public deleteUser (name: operations["deleteUser"]["parameters"]["path"]["name"]): Promise<void> {
+
+        const url: `/mia-users-management/api/users/${string}` = `/mia-users-management/api/users/${encodeURIComponent(name)}`;
+        const method: HttpMethodsOf<"/mia-users-management/api/users/{name}"> = "delete";
+
+        return fetch(url, {
+            "method": method,
+            "headers": {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + this._token
+            }
+        }).then((res: Response): Promise<void> => {
+
+            if (res.ok) {
+                return Promise.resolve();
+            }
+
+            return this._parseResponse(res) as Promise<void>;
+
+        });
+
+    }
+
+    public getUserTokens (
+        name: operations["getUserTokens"]["parameters"]["path"]["name"]
+    ): Promise<operations["getUserTokens"]["responses"]["200"]["content"]["application/json"]> {
+
+        const url: `/mia-users-management/api/users/${string}/tokens` = `/mia-users-management/api/users/${encodeURIComponent(name)}/tokens`;
+        const method: HttpMethodsOf<"/mia-users-management/api/users/{name}/tokens"> = "get";
+
+        return fetch(url, {
+            "method": method,
+            "headers": {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + this._token
+            }
+        }).then((res: Response): Promise<operations["getUserTokens"]["responses"]["200"]["content"]["application/json"]> => {
+
+            return this._parseResponse(res) as Promise<operations["getUserTokens"]["responses"]["200"]["content"]["application/json"]>;
+
+        });
+
+    }
+
+    public deleteToken (
+        data: operations["deleteToken"]["requestBody"]["content"]["application/json"]
+    ): Promise<void> {
+
+        const url: keyof paths = "/mia-users-management/api/tokens";
+        const method: HttpMethodsOf<typeof url> = "delete";
+
+        return fetch(url, {
+            "method": method,
+            "headers": {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + this._token
+            },
+            "body": JSON.stringify(data)
+        }).then((res: Response): Promise<void> => {
+
+            if (res.ok) {
+                return Promise.resolve();
+            }
+
+            return this._parseResponse(res) as Promise<void>;
 
         });
 
