@@ -5,7 +5,8 @@
     import {
         Modal, ModalBody, ModalFooter,
         InputTextLabel, CheckBoxLabel,
-        Button
+        Button,
+        generateFocus
     } from "react-bootstrap-fontawesome";
 
     // locals
@@ -14,7 +15,7 @@
 // types & interfaces
 
     // externals
-    import type { iPropsNode } from "react-bootstrap-fontawesome";
+    import type { iPropsNode, iGenerateFocusCallback } from "react-bootstrap-fontawesome";
 
     // locals
     import type { operations } from "../Descriptor";
@@ -40,6 +41,10 @@ export default class UserCreateModal extends React.Component<iProps, iState> {
 
         public static displayName: string = "UserCreateModal";
 
+    // private
+
+    private readonly _generateFocus: iGenerateFocusCallback;
+
     // constructor
 
     public constructor (props: iProps) {
@@ -52,6 +57,14 @@ export default class UserCreateModal extends React.Component<iProps, iState> {
             "password": "",
             "isAdmin": false
         };
+
+        this._generateFocus = generateFocus<HTMLInputElement>();
+
+    }
+
+    public componentDidMount (): void {
+
+        this._generateFocus.setFocus();
 
     }
 
@@ -131,15 +144,19 @@ export default class UserCreateModal extends React.Component<iProps, iState> {
 
             <ModalBody>
 
-                <InputTextLabel id="create-user-name" label="Username" disabled={ this.state.running }
+                <InputTextLabel id="create-user-name" label="Username"
+                    disabled={ this.state.running }
+                    _ref={ this._generateFocus.ref as React.RefObject<HTMLInputElement> }
                     value={ this.state.name } onChange={ this._handleChangeName }
                 />
 
-                <InputTextLabel id="create-user-password" label="Password" type="password" disabled={ this.state.running }
+                <InputTextLabel id="create-user-password" label="Password" type="password"
+                    disabled={ this.state.running }
                     value={ this.state.password } onChange={ this._handleChangePassword }
                 />
 
-                <CheckBoxLabel id="create-user-is-admin" label="Administrator" disabled={ this.state.running }
+                <CheckBoxLabel id="create-user-is-admin" label="Administrator"
+                    className="mb-0" disabled={ this.state.running }
                     checked={ this.state.isAdmin } onToogle={ this._handleToggleIsAdmin }
                 />
 
