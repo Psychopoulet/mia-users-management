@@ -1,5 +1,5 @@
 // locals
-import type { AuthTokenPublic, AuthUserPublic } from "./AuthDatabase";
+import type { AuthTokenPublic, AuthUserPublic } from "../@types/AuthDatabase";
 import type { components } from "../Descriptor";
 
 // module

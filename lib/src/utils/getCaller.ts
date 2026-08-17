@@ -4,7 +4,7 @@
     import { UnauthorizedError } from "node-pluginsmanager-plugin";
 
     // locals
-    import type { AuthDatabase, FullAuthPublic } from "./AuthDatabase";
+    import type { AuthDatabase, FullAuthPublic } from "../@types/AuthDatabase";
 
 // types & interfaces
 

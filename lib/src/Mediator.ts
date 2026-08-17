@@ -17,7 +17,7 @@
     import type { iUrlWithHeaders } from "./utils/getCaller";
     import { assertAdmin, assertSelfOrAdmin } from "./utils/assertPermissions";
     import { serializeToken, serializeUser } from "./utils/serializeAuth";
-    import type { AuthDatabase, AuthTokenPublic, AuthUserPublic, FullAuthPublic } from "./utils/AuthDatabase";
+    import type { AuthDatabase, AuthTokenPublic, AuthUserPublic, FullAuthPublic } from "./@types/AuthDatabase";
     import type { components, operations } from "./Descriptor";
 
 // module
