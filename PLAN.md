@@ -27,8 +27,9 @@ Update `lib/data/Descriptor.json`:
 
 - Users: list, get by name, create (`put`), update (`post`, **no name change**), delete.
 - Tokens: list by user, delete by token value in **body** (never in path/query).
-- Auth/permission rules reflected in descriptions and error responses.
-- Follow put/201, get/post/delete 200|204 conventions; error schema aligned with template.
+- Auth/permission rules reflected in operation descriptions (Mediator enforces them).
+- Schemas: reuse `User` component where shared; one-off payloads/objects declared **inline** (no single-use components).
+- Follow put/201, get/post/delete 200|204 conventions; Error schema via `default`.
 
 ### b) Back-office — ~3h
 
@@ -68,7 +69,7 @@ Update `lib/data/Descriptor.json`:
 
 ## Step status
 
-- [ ] a) OpenAPI
+- [x] a) OpenAPI
 - [ ] b) Back-office
 - [ ] c) Unit tests
 - [ ] d) Front SDK
