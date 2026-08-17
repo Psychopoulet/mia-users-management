@@ -3,8 +3,8 @@
     // externals
     import React from "react";
     import {
-        Modal, ModalBody, ModalFooter,
-        List, ListItem,
+        Modal, ModalBody, ModalTable, ModalFooter,
+        TableHeader, TableBody,
         Button, ButtonGroup, Alert
     } from "react-bootstrap-fontawesome";
 
@@ -132,40 +132,59 @@ export default class UserTokensModal extends React.Component<iProps, iState> {
 
     public render (): React.JSX.Element {
 
-        return <Modal appId="{{plugin.name}}-app" title={ "Tokens — " + this.props.userName } centered
+        return <Modal appId="{{plugin.name}}-app" title={ "Tokens — " + this.props.userName }
+            centered size="lg"
             onClose={ this.props.onClose }>
 
-            <ModalBody>
+            { this.state.loading && <ModalBody><Alert variant="info">Loading tokens...</Alert></ModalBody> }
 
-                { this.state.loading && <Alert variant="info">Loading tokens...</Alert> }
+            { !this.state.loading && !this.state.tokens.length && <ModalBody><Alert variant="secondary">No tokens</Alert></ModalBody> }
 
-                { !this.state.loading && !this.state.tokens.length && <Alert variant="secondary">No tokens</Alert> }
+            { !this.state.loading && 0 < this.state.tokens.length && <ModalTable>
 
-                { !this.state.loading && Boolean(this.state.tokens.length) && <List>
+                <TableHeader>
+                    <tr>
+                        <th>Fingerprint</th>
+                        <th>Created at</th>
+                        <th></th>
+                    </tr>
+                </TableHeader>
+
+                <TableBody>
 
                     { this.state.tokens.map((row: TokenRow): React.JSX.Element => {
 
-                        return <ListItem key={ row.token } justify>
+                        return <tr key={ row.token }>
 
-                            <span>
+                            <td>
                                 <code>{ row.fingerprint || row.token.slice(0, 12) + "…" }</code>
-                                { " · " + new Date(row.createdAt).toLocaleString() }
-                            </span>
+                            </td>
 
-                            <ButtonGroup>
-                                <Button title="Delete token" icon="trash" variant="danger" outline size="sm"
-                                    disabled={ this.state.running }
-                                    onClick={ this._handleDeleteToken(row.token) }
-                                />
-                            </ButtonGroup>
+                            <td>
+                                { new Date(row.createdAt).toLocaleString() }
+                            </td>
 
-                        </ListItem>;
+                            <td>
+
+                                <ButtonGroup block>
+
+                                    <Button title="Delete token"
+                                        icon="trash" variant="danger" outline size="sm"
+                                        disabled={ this.state.running }
+                                        onClick={ this._handleDeleteToken(row.token) }
+                                    />
+
+                                </ButtonGroup>
+
+                            </td>
+
+                        </tr>;
 
                     }) }
 
-                </List> }
+                </TableBody>
 
-            </ModalBody>
+            </ModalTable> }
 
             <ModalFooter>
 
