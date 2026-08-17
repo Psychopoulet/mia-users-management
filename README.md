@@ -19,3 +19,25 @@ Plugin de gestion des utilisateurs de MIA.
 ## OpenAPI
 
 [API Descriptor](./lib/data/Descriptor.json)
+
+## Purpose
+
+Manage MIA accounts and their session tokens from a dedicated plugin screen: list users, create or update accounts, remove users, and review or revoke tokens.
+
+Usernames never change after creation. Tokens can only be listed or deleted (not created or edited here).
+
+## Who can do what
+
+**Administrators**
+- Create users (including admin accounts).
+- Edit any user’s password and admin flag.
+- Delete any user.
+- List and delete any user’s tokens.
+
+**Any signed-in user**
+- See the user list.
+- Edit their own password.
+- Delete their own account.
+- List and delete their own tokens.
+
+Actions that do not apply to you are hidden in the interface.

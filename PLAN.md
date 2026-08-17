@@ -75,5 +75,5 @@ Update `lib/data/Descriptor.json`:
 - [x] c) Unit tests
 - [x] d) Front SDK
 - [x] e) Front components
-- [ ] f) README
+- [x] f) README
 - [ ] g) Review
