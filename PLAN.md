@@ -72,7 +72,7 @@ Update `lib/data/Descriptor.json`:
 
 - [x] a) OpenAPI
 - [x] b) Back-office
-- [ ] c) Unit tests
+- [x] c) Unit tests
 - [ ] d) Front SDK
 - [ ] e) Front components
 - [ ] f) README
