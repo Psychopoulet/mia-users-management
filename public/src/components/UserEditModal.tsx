@@ -11,7 +11,7 @@
     // locals
     import getSDK from "../SDK";
     import { canSetIsAdmin } from "../utils/userPermissions";
-    import { CurrentUserContext } from "./CurrentUserContext";
+    import { CurrentUserContext } from "./CurrentUserProvider";
 
 // types & interfaces
 

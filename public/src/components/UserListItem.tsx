@@ -3,7 +3,7 @@
     // externals
     import React from "react";
     import {
-        ListItem, Badge,
+        Icon,
         Button, ButtonGroup
     } from "react-bootstrap-fontawesome";
 
@@ -13,7 +13,7 @@
         canEditUser,
         canManageUserTokens
     } from "../utils/userPermissions";
-    import { CurrentUserContext } from "./CurrentUserContext";
+    import { CurrentUserContext } from "./CurrentUserProvider";
 
 // types & interfaces
 
@@ -50,6 +50,7 @@ export default class UserListItem extends React.Component<iProps> {
 
         e.preventDefault();
         e.stopPropagation();
+
         this.props.onEdit(this.props.user);
 
     };
@@ -58,6 +59,7 @@ export default class UserListItem extends React.Component<iProps> {
 
         e.preventDefault();
         e.stopPropagation();
+
         this.props.onDelete(this.props.user);
 
     };
@@ -66,6 +68,7 @@ export default class UserListItem extends React.Component<iProps> {
 
         e.preventDefault();
         e.stopPropagation();
+
         this.props.onTokens(this.props.user);
 
     };
@@ -85,33 +88,41 @@ export default class UserListItem extends React.Component<iProps> {
         const showDelete: boolean = canDeleteUser(me, target.name);
         const showTokens: boolean = canManageUserTokens(me, target.name);
 
-        return <ListItem justify>
+        return <tr>
 
-            <span>
+            <td>
                 { target.name }
-                { " " }
-                { target.isAdmin && <Badge variant="warning">admin</Badge> }
-                { " " }
+            </td>
+
+            <td>
+                { target.isAdmin && <Icon variant="success" type="check" /> }
+            </td>
+
+            <td>
                 <small className="text-muted">{ new Date(target.createdAt).toLocaleString() }</small>
-            </span>
+            </td>
 
-            <ButtonGroup>
+            <td>
 
-                { showTokens && <Button title="Tokens" icon="fingerprint" variant="info" outline size="sm"
-                    onClick={ this._handleTokens }
-                /> }
+                <ButtonGroup block>
 
-                { showEdit && <Button title="Edit user" icon="edit" variant="primary" outline size="sm"
-                    onClick={ this._handleEdit }
-                /> }
+                    { showTokens && <Button title="Tokens" icon="fingerprint" variant="info" outline size="sm"
+                        onClick={ this._handleTokens }
+                    /> }
 
-                { showDelete && <Button title="Delete user" icon="trash" variant="danger" outline size="sm"
-                    onClick={ this._handleDelete }
-                /> }
+                    { showEdit && <Button title="Edit user" icon="edit" variant="primary" outline size="sm"
+                        onClick={ this._handleEdit }
+                    /> }
 
-            </ButtonGroup>
+                    { showDelete && <Button title="Delete user" icon="trash" variant="danger" outline size="sm"
+                        onClick={ this._handleDelete }
+                    /> }
 
-        </ListItem>;
+                </ButtonGroup>
+
+            </td>
+
+        </tr>;
 
     }
 

@@ -6,7 +6,7 @@
 
     // locals
     import getSDK from "./SDK";
-    import CurrentUserProvider from "./components/CurrentUserContext";
+    import CurrentUserProvider from "./components/CurrentUserProvider";
     import UsersManagement from "./components/UsersManagement";
 
 // types & interfaces
@@ -186,12 +186,16 @@ export default class App extends React.Component<iPropsNode, iState> {
                     </ModalBody>
                 </Modal> }
 
-                <div className="row">
+                <div className="row justify-content-center">
+
                     <div className="col-12 col-lg-8 col-xl-6">
+
                         <CurrentUserProvider onError={ this._handleError }>
                             <UsersManagement onError={ this._handleError } />
                         </CurrentUserProvider>
+
                     </div>
+
                 </div>
 
             </div>;

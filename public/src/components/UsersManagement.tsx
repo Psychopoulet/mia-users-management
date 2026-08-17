@@ -3,14 +3,15 @@
     // externals
     import React from "react";
     import {
-        Card, CardHeader, CardList, CardFooter,
+        Card, CardHeader, CardBody, CardTable, CardFooter,
+        TableHeader, TableBody,
         Alert, Button
     } from "react-bootstrap-fontawesome";
 
     // locals
     import getSDK from "../SDK";
     import { canCreateUser } from "../utils/userPermissions";
-    import { CurrentUserContext } from "./CurrentUserContext";
+    import { CurrentUserContext } from "./CurrentUserProvider";
     import UserListItem from "./UserListItem";
     import UserCreateModal from "./UserCreateModal";
     import UserEditModal from "./UserEditModal";
@@ -114,7 +115,12 @@ export default class UsersManagement extends React.Component<iProps, iState> {
 
     };
 
-    private readonly _handleCloseCreate = (): void => {
+    private readonly _handleCloseCreate = (e?: React.MouseEvent<HTMLButtonElement>): void => {
+
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
 
         this.setState({
             "createOpened": false
@@ -130,7 +136,12 @@ export default class UsersManagement extends React.Component<iProps, iState> {
 
     };
 
-    private readonly _handleCloseEdit = (): void => {
+    private readonly _handleCloseEdit = (e?: React.MouseEvent<HTMLButtonElement>): void => {
+
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
 
         this.setState({
             "editUser": null
@@ -146,7 +157,12 @@ export default class UsersManagement extends React.Component<iProps, iState> {
 
     };
 
-    private readonly _handleCloseDelete = (): void => {
+    private readonly _handleCloseDelete = (e?: React.MouseEvent<HTMLButtonElement>): void => {
+
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
 
         this.setState({
             "deleteUser": null
@@ -162,7 +178,12 @@ export default class UsersManagement extends React.Component<iProps, iState> {
 
     };
 
-    private readonly _handleCloseTokens = (): void => {
+    private readonly _handleCloseTokens = (e?: React.MouseEvent<HTMLButtonElement>): void => {
+
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
 
         this.setState({
             "tokensUser": null
@@ -215,29 +236,48 @@ export default class UsersManagement extends React.Component<iProps, iState> {
 
                 <CardHeader>Users</CardHeader>
 
-                <CardList>
+                { this.state.loading && <CardBody><Alert variant="info">Loading users...</Alert></CardBody> }
+                { !this.state.loading && !this.state.users.length && <CardBody><Alert variant="warning">No users</Alert></CardBody> }
 
-                    { this.state.loading && <Alert variant="info">Loading users...</Alert> }
+                { !this.state.loading && 0 < this.state.users.length && <CardTable>
 
-                    { !this.state.loading && !this.state.users.length && <Alert variant="secondary">No users</Alert> }
+                    <TableHeader>
 
-                    { !this.state.loading && this.state.users.map((user: User): React.JSX.Element => {
+                        <tr>
+                            <th>Name</th>
+                            <th>Admin</th>
+                            <th>Created at</th>
+                            <th></th>
+                        </tr>
 
-                        return <UserListItem key={ user.name }
-                            user={ user }
-                            onEdit={ this._handleEdit }
-                            onDelete={ this._handleDelete }
-                            onTokens={ this._handleTokens }
-                        />;
+                    </TableHeader>
 
-                    }) }
+                    <TableBody>
 
-                </CardList>
+                        { this.state.users.map((user: User): React.JSX.Element => {
+
+                            return <UserListItem key={ user.name }
+                                user={ user }
+                                onEdit={ this._handleEdit }
+                                onDelete={ this._handleDelete }
+                                onTokens={ this._handleTokens }
+                            />;
+
+                        }) }
+
+                    </TableBody>
+
+                </CardTable> }
 
                 { showCreate && <CardFooter>
-                    <Button icon="plus" variant="success" onClick={ this._handleOpenCreate }>
+
+                    <Button title="Create user"
+                        icon="plus" variant="success" block
+                        onClick={ this._handleOpenCreate }
+                    >
                         Create user
                     </Button>
+
                 </CardFooter> }
 
             </Card>
